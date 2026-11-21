@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Email Writer Pro - Professional Email Generator</title>
+    <title>AI Email Writer Pro - Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,366 +26,474 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-dark);
         }
 
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.95;
+        .brand-icon {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
         }
 
-        .content {
-            padding: 40px;
+        .badge {
+            background: #eef2ff;
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #c7d2fe;
         }
 
-        .api-section {
-            background: #f8f9fa;
-            padding: 25px;
+        /* Main Workspace */
+        .workspace {
+            max-width: 1320px;
+            width: 100%;
+            margin: 28px auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-dark);
+        }
+
+        /* API Box */
+        .api-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            margin-bottom: 30px;
-            border-left: 4px solid #667eea;
+            padding: 16px;
+            margin-bottom: 22px;
         }
 
-        .api-section h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.2em;
+        .api-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
         }
 
-        .row {
+        .api-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .api-links a:hover {
+            text-decoration: underline;
+        }
+
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px;
         }
 
-        .input-group {
-            margin-bottom: 22px;
+        .form-group {
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
+            font-size: 0.85rem;
             font-weight: 600;
-            font-size: 0.95em;
+            color: #334155;
+            margin-bottom: 6px;
         }
 
-        input[type="text"],
-        input[type="password"],
-        select,
-        textarea {
+        input, select, textarea {
             width: 100%;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
+            padding: 11px 14px;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s;
+            font-size: 0.95rem;
             font-family: inherit;
+            color: var(--text-dark);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        select:focus,
-        textarea:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        .key-wrapper {
+            position: relative;
+        }
+
+        .key-wrapper input {
+            padding-right: 42px;
+        }
+
+        .toggle-key {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 1rem;
         }
 
         textarea {
+            min-height: 135px;
             resize: vertical;
-            min-height: 120px;
+            line-height: 1.5;
         }
 
-        .button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
             color: white;
             border: none;
-            padding: 16px 40px;
+            padding: 14px 24px;
             border-radius: 10px;
-            font-size: 1.1em;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             width: 100%;
-            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            margin-top: auto;
         }
 
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
         }
 
-        .button:disabled {
-            opacity: 0.6;
+        .btn-primary:disabled {
+            opacity: 0.65;
             cursor: not-allowed;
             transform: none;
         }
 
-        .result-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
+        /* Output Panel */
+        .output-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            color: var(--text-dark);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-copy {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn-copy:hover {
+            background: #059669;
+        }
+
+        .email-canvas {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid var(--border);
             border-radius: 12px;
+            padding: 24px;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .empty-state {
+            margin: auto;
+            text-align: center;
+            color: var(--text-muted);
+            max-width: 280px;
+        }
+
+        .empty-state span {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .email-text {
+            white-space: pre-wrap;
+            line-height: 1.75;
+            font-size: 0.98rem;
+            color: #1e293b;
+            direction: auto;
             display: none;
         }
 
-        .result-section.active {
+        .email-text.active {
             display: block;
         }
 
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-
-        .result-header h3 {
-            color: #333;
-            font-size: 1.3em;
-        }
-
-        .copy-btn {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .copy-btn:hover {
-            background: #059669;
-            transform: scale(1.05);
-        }
-
-        .email-output {
-            background: white;
-            padding: 25px;
+        .error-banner {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px 16px;
             border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            white-space: pre-wrap;
-            line-height: 1.8;
-            color: #333;
-            font-size: 1em;
-            direction: auto;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
+            font-size: 0.9rem;
+            margin-top: 14px;
             display: none;
         }
 
-        .loading.active {
+        .error-banner.active {
+            display: block;
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            margin: auto;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .loader.active {
             display: block;
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            width: 38px;
+            height: 38px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-            border-left: 4px solid #c33;
-        }
-
-        .error.active {
-            display: block;
-        }
-
-        .info-box {
-            background: #e0f2fe;
-            border-left: 4px solid #0284c7;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            color: #0c4a6e;
-            line-height: 1.5;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            font-size: 0.9em;
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
+        @media (max-width: 960px) {
+            .workspace {
+                grid-template-columns: 1fr;
             }
-            
-            .content {
-                padding: 25px;
+            .email-canvas {
+                min-height: 300px;
             }
+        }
 
-            .row {
+        @media (max-width: 600px) {
+            .grid-2 {
                 grid-template-columns: 1fr;
                 gap: 0;
+            }
+            .navbar {
+                padding: 14px 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>✉️ AI Email Writer Pro</h1>
-            <p>Generate Professional Emails in Seconds with AI</p>
-        </div>
 
-        <div class="content">
-            <div class="api-section">
-                <h3>🔑 API Configuration</h3>
-                <div class="info-box">
-                    Get your API key from <strong>aistudio.google.com</strong> (Free Tier), <strong>console.anthropic.com</strong>, or <strong>platform.openai.com</strong>. Your key is saved locally in your browser.
+    <nav class="navbar">
+        <div class="brand">
+            <div class="brand-icon">✉️</div>
+            <span>AI Email Writer Pro</span>
+        </div>
+        <span class="badge">v2.0 • Gemini • Claude • GPT</span>
+    </nav>
+
+    <main class="workspace">
+        <!-- Left Panel: Controls -->
+        <section class="panel">
+            <div class="panel-title">
+                <span>⚙️ Email Configuration</span>
+            </div>
+
+            <div class="api-box">
+                <div class="api-header">
+                    <span>API PROVIDER & KEY</span>
+                    <span class="api-links">
+                        Get key: <a href="https://aistudio.google.com/apikey" target="_blank">Gemini</a> • 
+                        <a href="https://console.anthropic.com/" target="_blank">Claude</a> • 
+                        <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI</a>
+                    </span>
                 </div>
-                <div class="row">
-                    <div class="input-group">
-                        <label for="apiProvider">AI Provider</label>
+                <div class="grid-2">
+                    <div class="form-group" style="margin-bottom:0;">
                         <select id="apiProvider" onchange="loadSavedKey()">
                             <option value="gemini">Google Gemini (2.5 Flash)</option>
-                            <option value="anthropic">Anthropic (Claude 3.5 Sonnet)</option>
+                            <option value="anthropic">Anthropic (Claude 3.5)</option>
                             <option value="openai">OpenAI (GPT-4o-mini)</option>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <label for="apiKey">API Key</label>
-                        <input type="password" id="apiKey" placeholder="Enter your API key" oninput="saveKey()">
+                    <div class="key-wrapper">
+                        <input type="password" id="apiKey" placeholder="Paste API Key..." oninput="saveKey()">
+                        <button type="button" class="toggle-key" onclick="toggleKeyVisibility()" title="Show/Hide Key">👁️</button>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="input-group">
-                    <label for="emailType">Email Type</label>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="emailType">Email Purpose</label>
                     <select id="emailType">
-                        <option value="sales">Sales Email</option>
-                        <option value="followup">Follow-up Email</option>
-                        <option value="cold">Cold Outreach</option>
-                        <option value="support">Customer Support</option>
-                        <option value="apology">Apology Email</option>
-                        <option value="thank">Thank You Email</option>
-                        <option value="meeting">Meeting Request</option>
-                        <option value="introduction">Introduction Email</option>
+                        <option value="sales">💼 Sales Pitch</option>
+                        <option value="cold">❄️ Cold Outreach</option>
+                        <option value="followup">🔄 Follow-up</option>
+                        <option value="meeting">📅 Meeting Request</option>
+                        <option value="support">🎧 Customer Support</option>
+                        <option value="introduction">👋 Introduction</option>
+                        <option value="thank">🙏 Thank You</option>
+                        <option value="apology">🤝 Apology</option>
                     </select>
                 </div>
 
-                <div class="input-group">
-                    <label for="tone">Tone</label>
+                <div class="form-group">
+                    <label for="tone">Tone of Voice</label>
                     <select id="tone">
                         <option value="professional">Professional</option>
+                        <option value="persuasive">Persuasive</option>
                         <option value="friendly">Friendly</option>
                         <option value="formal">Formal</option>
                         <option value="casual">Casual</option>
-                        <option value="persuasive">Persuasive</option>
                     </select>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="input-group">
+            <div class="grid-2">
+                <div class="form-group">
                     <label for="recipient">Recipient Name</label>
-                    <input type="text" id="recipient" placeholder="e.g., John Smith">
+                    <input type="text" id="recipient" placeholder="e.g., Sarah Jenkins">
                 </div>
 
-                <div class="input-group">
-                    <label for="language">Language</label>
+                <div class="form-group">
+                    <label for="language">Output Language</label>
                     <select id="language">
                         <option value="English">English</option>
                         <option value="Arabic">Arabic (العربية)</option>
                         <option value="French">French</option>
-                        <option value="Spanish">Spanish</option>
                         <option value="German">German</option>
+                        <option value="Spanish">Spanish</option>
                     </select>
                 </div>
             </div>
 
-            <div class="input-group">
-                <label for="subject">Email Subject (Optional)</label>
-                <input type="text" id="subject" placeholder="Leave empty for AI-generated subject">
+            <div class="form-group">
+                <label for="subject">Subject Line (Optional)</label>
+                <input type="text" id="subject" placeholder="Leave blank to let AI generate a high-converting subject">
             </div>
 
-            <div class="input-group">
-                <label for="context">Context / Key Points</label>
-                <textarea id="context" placeholder="Describe what you want to communicate...&#10;&#10;Example:&#10;- Following up on meeting last Tuesday&#10;- Discussed new product features&#10;- Want to schedule demo next week"></textarea>
+            <div class="form-group">
+                <label for="context">Key Points & Context</label>
+                <textarea id="context" placeholder="What is this email about?&#10;• Following up on yesterday's demo&#10;• Highlight 20% discount valid until Friday&#10;• Ask for a 15-minute call"></textarea>
             </div>
 
-            <button class="button" id="generateBtn" onclick="generateEmail()">Generate Email (Ctrl + Enter)</button>
+            <button class="btn-primary" id="generateBtn" onclick="generateEmail()">
+                <span>✨ Generate Email</span>
+            </button>
 
-            <div class="error" id="error"></div>
+            <div class="error-banner" id="error"></div>
+        </section>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Generating your professional email...</p>
-            </div>
-
-            <div class="result-section" id="resultSection">
-                <div class="result-header">
-                    <h3>📧 Your Email</h3>
-                    <button class="copy-btn" onclick="copyEmail(this)">Copy Email</button>
+        <!-- Right Panel: Live Preview -->
+        <section class="panel">
+            <div class="panel-title">
+                <span>📄 Generated Preview</span>
+                <div class="output-actions" id="actionButtons" style="display: none;">
+                    <a id="mailtoBtn" href="#" class="btn-sm" target="_blank">↗ Open in Mail</a>
+                    <button class="btn-sm btn-copy" onclick="copyEmail(this)">📋 Copy</button>
                 </div>
-                <div class="email-output" id="emailOutput"></div>
             </div>
-        </div>
 
-        <div class="footer">
-            AI Email Writer Pro v2.0 | Supports Gemini, Claude & OpenAI
-        </div>
-    </div>
+            <div class="email-canvas">
+                <div class="empty-state" id="emptyState">
+                    <span>✍️</span>
+                    <p>Fill in your email details on the left and click <strong>Generate Email</strong> to see the result here.</p>
+                </div>
+
+                <div class="loader" id="loading">
+                    <div class="spinner"></div>
+                    <p>Crafting your email...</p>
+                </div>
+
+                <div class="email-text" id="emailOutput"></div>
+            </div>
+        </section>
+    </main>
 
     <script>
-        window.onload = function() {
-            loadSavedKey();
-        };
+        window.onload = loadSavedKey;
 
         function saveKey() {
             const provider = document.getElementById('apiProvider').value;
@@ -381,8 +503,12 @@
 
         function loadSavedKey() {
             const provider = document.getElementById('apiProvider').value;
-            const savedKey = localStorage.getItem(`email_writer_key_${provider}`) || '';
-            document.getElementById('apiKey').value = savedKey;
+            document.getElementById('apiKey').value = localStorage.getItem(`email_writer_key_${provider}`) || '';
+        }
+
+        function toggleKeyVisibility() {
+            const input = document.getElementById('apiKey');
+            input.type = input.type === 'password' ? 'text' : 'password';
         }
 
         async function generateEmail() {
@@ -397,87 +523,65 @@
 
             const errorDiv = document.getElementById('error');
             const loadingDiv = document.getElementById('loading');
-            const resultSection = document.getElementById('resultSection');
+            const emptyState = document.getElementById('emptyState');
+            const emailOutput = document.getElementById('emailOutput');
+            const actionButtons = document.getElementById('actionButtons');
             const generateBtn = document.getElementById('generateBtn');
 
             errorDiv.classList.remove('active');
-            resultSection.classList.remove('active');
 
             if (!apiKey) {
-                errorDiv.textContent = 'Please enter your API key.';
+                errorDiv.textContent = '⚠️ Please enter your API key first.';
                 errorDiv.classList.add('active');
                 return;
             }
 
             if (!context) {
-                errorDiv.textContent = 'Please provide context or key points for the email.';
+                errorDiv.textContent = '⚠️ Please describe the key points for your email.';
                 errorDiv.classList.add('active');
                 return;
             }
 
+            emptyState.style.display = 'none';
+            emailOutput.classList.remove('active');
+            actionButtons.style.display = 'none';
             loadingDiv.classList.add('active');
             generateBtn.disabled = true;
 
-            const emailTypeDescriptions = {
-                sales: 'a sales email',
-                followup: 'a follow-up email',
-                cold: 'a cold outreach email',
-                support: 'a customer support email',
-                apology: 'an apology email',
-                thank: 'a thank you email',
-                meeting: 'a meeting request email',
-                introduction: 'an introduction email'
-            };
+            const prompt = `Write a ${tone} ${emailType} email in ${language}.
+Recipient: ${recipient || '[Recipient Name]'}
+${subject ? `Subject: ${subject}` : 'Generate a compelling subject line.'}
 
-            const prompt = `Write ${emailTypeDescriptions[emailType]} in ${language} with the following details:
-
-Recipient: ${recipient || 'the recipient'}
-${subject ? `Subject: ${subject}` : 'Generate an appropriate subject line'}
-Tone: ${tone}
-Language: ${language}
-
-Context and key points:
+Key Points & Context:
 ${context}
 
-Requirements:
-- Write a complete, professional email in ${language}
-- Include subject line (unless provided)
-- Proper greeting and closing
-- Clear and concise
-- ${tone} tone throughout
-- Ready to send without markdown formatting symbols like ** or ##
+Rules:
+- Output ONLY the email (Subject line followed by the body).
+- Do NOT use markdown symbols like ** or ##.
+- Keep it clear, natural, and ready to send.
 
-Format the email properly with:
-Subject: [subject line]
+Format:
+Subject: [Subject Line]
 
-[Email body]
-
-[Signature]`;
+[Email Body]`;
 
             try {
                 let emailText = '';
 
                 if (apiProvider === 'gemini') {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            contents: [{
-                                parts: [{ text: prompt }]
-                            }]
+                            contents: [{ parts: [{ text: prompt }] }]
                         })
                     });
-
-                    const data = await response.json();
-                    if (!response.ok) {
-                        throw new Error(data.error?.message || `Gemini API Error: ${response.status}`);
-                    }
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
                     emailText = data.candidates[0].content.parts[0].text;
 
                 } else if (apiProvider === 'anthropic') {
-                    const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    const res = await fetch('https://api.anthropic.com/v1/messages', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -488,21 +592,15 @@ Subject: [subject line]
                         body: JSON.stringify({
                             model: 'claude-3-5-sonnet-20241022',
                             max_tokens: 1500,
-                            messages: [{
-                                role: 'user',
-                                content: prompt
-                            }]
+                            messages: [{ role: 'user', content: prompt }]
                         })
                     });
-
-                    const data = await response.json();
-                    if (!response.ok) {
-                        throw new Error(data.error?.message || `Anthropic API Error: ${response.status}`);
-                    }
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
                     emailText = data.content[0].text;
 
                 } else {
-                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    const res = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -510,48 +608,56 @@ Subject: [subject line]
                         },
                         body: JSON.stringify({
                             model: 'gpt-4o-mini',
-                            messages: [{
-                                role: 'user',
-                                content: prompt
-                            }],
+                            messages: [{ role: 'user', content: prompt }],
                             max_tokens: 1500
                         })
                     });
-
-                    const data = await response.json();
-                    if (!response.ok) {
-                        throw new Error(data.error?.message || `OpenAI API Error: ${response.status}`);
-                    }
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
                     emailText = data.choices[0].message.content;
                 }
 
-                document.getElementById('emailOutput').textContent = emailText.trim();
-                resultSection.classList.add('active');
-                
-            } catch (error) {
-                errorDiv.textContent = `Error: ${error.message}`;
+                const cleanText = emailText.trim();
+                emailOutput.textContent = cleanText;
+                emailOutput.classList.add('active');
+                actionButtons.style.display = 'flex';
+                updateMailtoLink(cleanText);
+
+            } catch (err) {
+                errorDiv.textContent = `❌ Error: ${err.message}`;
                 errorDiv.classList.add('active');
+                emptyState.style.display = 'block';
             } finally {
                 loadingDiv.classList.remove('active');
                 generateBtn.disabled = false;
             }
         }
 
+        function updateMailtoLink(fullText) {
+            const lines = fullText.split('\n');
+            let subjectLine = '';
+            let bodyText = fullText;
+
+            if (lines[0].toLowerCase().startsWith('subject:')) {
+                subjectLine = lines[0].replace(/^subject:\s*/i, '').trim();
+                bodyText = lines.slice(1).join('\n').trim();
+            }
+
+            const mailtoUrl = `mailto:?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(bodyText)}`;
+            document.getElementById('mailtoBtn').href = mailtoUrl;
+        }
+
         function copyEmail(btn) {
-            const emailText = document.getElementById('emailOutput').textContent;
-            navigator.clipboard.writeText(emailText).then(() => {
-                const originalText = btn.textContent;
+            const text = document.getElementById('emailOutput').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.textContent;
                 btn.textContent = '✓ Copied!';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                }, 2000);
+                setTimeout(() => btn.textContent = original, 2000);
             });
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                generateEmail();
-            }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) generateEmail();
         });
     </script>
 </body>
